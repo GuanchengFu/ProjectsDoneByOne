@@ -1,0 +1,17 @@
+The user possible have two ways to interact with the text editor:
+1. Using the cursor for
+    -- Changing the size of the current windows.
+    -- Changing the position of the cursors.
+
+
+2. Using the keyboard for
+    -- Input characters
+    -- Undo and redo and other shortcuts
+
+
+
+Possible classes:
+
+class renderEngine {
+
+}
