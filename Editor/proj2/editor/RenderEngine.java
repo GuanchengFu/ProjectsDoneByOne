@@ -124,7 +124,8 @@ public class RenderEngine {
         private boolean checkWordWrap(Text t) {
             double textWidth = t.getLayoutBounds().getWidth();
             int width = (int) Math.round(textWidth);
-            if (currentPos.getX() + width > windowWidth - RIGHT_MARGIN) {
+            int expectedWidth = currentPos.getX() + width;
+            if (expectedWidth > windowWidth - RIGHT_MARGIN) {
                 if (text.size() == 0) {
                     Print.print("This condition should only happens when the available space is not enough for even " +
                             "one letter.");
@@ -132,11 +133,49 @@ public class RenderEngine {
                 } else {
                     Text lastText = text.get(text.size() - 1);
                     if (lastText.getText().equals(" ")) {
-                        System.out.println("OK!");
+                        //lastText is the " "
+                    } else {
+                        //lastText is a text.
+                        if (expectedWidth <= windowWidth) {
+                            return false;
+                        } else {
+                            //Move the entire word to the next line.
+                            return true;
+                        }
                     }
                 }
             }
             return false;
+        }
+
+        /** Provide a view of the first word before index.
+         *  If the text at index is space, return the space.
+         *  Otherwise, return the first word.*/
+        private List<Text> getWord(int index) {
+            int wordLength = getWordLength(index);
+            if (wordLength == 0) {
+
+            }
+        }
+
+        /** @return 0: if the char at index is a whitespace.
+         *  @return word length: otherwise.*/
+        private int getWordLength(int index) {
+            Text temp = text.get(index);
+            int length = 0;
+            while(!temp.getText().equals(" ") && !temp.getText().equals("\r") && index >= 0) {
+                length += 1;
+                index -= 1;
+                if (index < 0) {
+                    return length;
+                }
+                temp = text.get(index);
+            }
+            return length;
+        }
+
+        private void test() {
+            System.out.println(getWordLength(text.size() - 1));
         }
 
         @Override
@@ -150,12 +189,14 @@ public class RenderEngine {
                     // Ignore control keys, which have non-zero length, as well as the backspace
                     // key, which is represented as a character of value = 8 on Windows.
                     Text temp = new Text(characterTyped);
-                    if (!checkWordWrap(temp)) {
-                        NextLine(temp);
+                    if (checkWordWrap(temp)) {
+                        //Word wrap happens.
+                    } else {
+                        textSetUp(temp);
+                        NextPos(temp);
+                        keyEvent.consume();
                     }
-                    textSetUp(temp);
-                    NextPos(temp);
-                    keyEvent.consume();
+                    //test();
                 }
 
             } else if (keyEvent.getEventType() == KeyEvent.KEY_PRESSED) {
