@@ -1,5 +1,6 @@
 package editor;
 
+import editor.HelperClass.Print;
 import javafx.application.Application;
 import javafx.event.EventHandler;
 import javafx.geometry.VPos;
@@ -17,6 +18,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import editor.HelperClass.Position;
+import org.junit.Test;
 
 /** Display the text in a format which is suitable for the window with current size.
  *  requirement:
@@ -123,9 +125,18 @@ public class RenderEngine {
             double textWidth = t.getLayoutBounds().getWidth();
             int width = (int) Math.round(textWidth);
             if (currentPos.getX() + width > windowWidth - RIGHT_MARGIN) {
-                return false;
+                if (text.size() == 0) {
+                    Print.print("This condition should only happens when the available space is not enough for even " +
+                            "one letter.");
+                    return false;
+                } else {
+                    Text lastText = text.get(text.size() - 1);
+                    if (lastText.getText().equals(" ")) {
+                        System.out.println("OK!");
+                    }
+                }
             }
-            return true;
+            return false;
         }
 
         @Override
