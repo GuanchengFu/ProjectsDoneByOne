@@ -87,7 +87,6 @@ public class RenderEngine {
             t.setY(currentPos.getY());
             t.toFront();
             text.add(t);
-            rootRef.getChildren().add(t);
         }
 
         /** Update the variable currentPos so that it advanced to the next available position.
@@ -154,7 +153,9 @@ public class RenderEngine {
         private List<Text> getWord(int index) {
             int wordLength = getWordLength(index);
             if (wordLength == 0) {
-
+                return null;
+            } else {
+                return text.subList(index - wordLength + 1, index + 1);
             }
         }
 
@@ -174,6 +175,16 @@ public class RenderEngine {
             return length;
         }
 
+        /** Move the entire word to the next line when word wrap happens.*/
+        private void handleWordWrap(List<Text> word) {
+            NextLine(word.get(0));
+            for (Text t:word) {
+                t.setX(currentPos.getX());
+                t.setY(currentPos.getY());
+                NextPos(t);
+            }
+        }
+
         private void test() {
             System.out.println(getWordLength(text.size() - 1));
         }
@@ -190,12 +201,18 @@ public class RenderEngine {
                     // key, which is represented as a character of value = 8 on Windows.
                     Text temp = new Text(characterTyped);
                     if (checkWordWrap(temp)) {
-                        //Word wrap happens.
+                        temp.setTextOrigin(VPos.TOP);
+                        temp.setFont(Font.font(fontName, fontSize));
+                        temp.toFront();
+                        text.add(temp);
+                        List<Text> subList = getWord(text.size() - 1);
+                        handleWordWrap(subList);
                     } else {
                         textSetUp(temp);
                         NextPos(temp);
                         keyEvent.consume();
                     }
+                    rootRef.getChildren().add(temp);
                     //test();
                 }
 
