@@ -10,8 +10,15 @@ The user possible have two ways to interact with the text editor:
 
 
 
-Possible classes:
 
-class renderEngine {
+Cursor design: Basically, the user has two possibly ways to interact with the cursor.
 
-}
+The first way is using the keyboard: When the user input a character, delete a character,
+the cursor should move accordingly.
+
+In this situation, it should interact with the KeyEventHandler to get the information about which key
+is pressed.
+
+The second way is using the mouse, the cursor should move to the position where it was clicked.
+
+In this situation, it should interact with the MouseClickEventHandler
