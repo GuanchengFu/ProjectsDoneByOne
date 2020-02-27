@@ -254,49 +254,5 @@ public class RenderEngine {
         //test();
     }
 
-    private class KeyEventHandler implements EventHandler<KeyEvent> {
-
-
-        @Override
-        public void handle(KeyEvent keyEvent) {
-            if (keyEvent.getEventType() == KeyEvent.KEY_TYPED) {
-                // Use the KEY_TYPED event rather than KEY_PRESSED for letter keys, because with
-                // the KEY_TYPED event, javafx handles the "Shift" key and associated
-                // capitalization.
-                String characterTyped = keyEvent.getCharacter();
-                if (characterTyped.length() > 0 && characterTyped.charAt(0) != 8) {
-                    // Ignore control keys, which have non-zero length, as well as the backspace
-                    // key, which is represented as a character of value = 8 on Windows.
-                    Text temp = new Text(characterTyped);
-                    text.add(temp);
-                    size += 1;
-                    disposeSingleText(temp);
-                    rootRef.getChildren().add(temp);
-                }
-
-            } else if (keyEvent.getEventType() == KeyEvent.KEY_PRESSED) {
-                // Arrow keys should be processed using the KEY_PRESSED event, because KEY_PRESSED
-                // events have a code that we can check (KEY_TYPED events don't have an associated
-                // KeyCode).
-                KeyCode code = keyEvent.getCode();
-                if (code == KeyCode.UP) {
-                    fontSize += 5;
-                    //displayText.setFont(Font.font(fontName, fontSize));
-                    render();
-                } else if (code == KeyCode.DOWN) {
-                    fontSize = Math.max(0, fontSize - 5);
-                    render();
-                } else if (code == KeyCode.BACK_SPACE) {
-                    System.out.println("Backspace");
-                } else if (code == KeyCode.ENTER) {
-                    System.out.println("Enter");
-                }
-            }
-        }
-    }
-
-    public EventHandler<KeyEvent> getKeyEventHandler() {
-        return new KeyEventHandler();
-    }
 
 }

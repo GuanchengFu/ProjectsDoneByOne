@@ -39,7 +39,7 @@ public class Editor extends Application {
         // To get information about what keys the user is pressing, create an EventHandler.
         // EventHandler subclasses must override the "handle" function, which will be called
         // by javafx.
-        EventHandler<KeyEvent> keyEventHandler = render.getKeyEventHandler();
+        EventHandler<KeyEvent> keyEventHandler = new KeyEventHandler(render);
         scene.setOnKeyTyped(keyEventHandler);
         scene.setOnKeyPressed(keyEventHandler);
 
