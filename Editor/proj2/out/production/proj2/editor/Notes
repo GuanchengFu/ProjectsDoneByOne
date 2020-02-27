@@ -21,4 +21,11 @@ is pressed.
 
 The second way is using the mouse, the cursor should move to the position where it was clicked.
 
-In this situation, it should interact with the MouseClickEventHandler
+In this situation, it should interact with the MouseClickEventHandler.
+
+
+Possible design for
+public class CursorTracker {
+    private static cursorPos;    //Keep Track of the cursor position using this variable.
+
+}

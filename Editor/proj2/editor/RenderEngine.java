@@ -1,6 +1,8 @@
 package editor;
 
 import editor.HelperClass.Print;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.application.Application;
 import javafx.event.EventHandler;
 import javafx.geometry.VPos;
@@ -9,6 +11,7 @@ import javafx.scene.Scene;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
@@ -18,6 +21,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import editor.HelperClass.Position;
+import javafx.util.Duration;
 import org.junit.Test;
 
 /** Display the text in a format which is suitable for the window with current size.
@@ -38,10 +42,10 @@ public class RenderEngine {
     private static final int RIGHT_MARGIN = 5;
 
     //Store the working procedure for rendering.
-    private int size = 0;
-    private int fontSize = 20;
+    int size = 0;
+    int fontSize = 20;
 
-    private String fontName = "Verdana";
+    String fontName = "Verdana";
 
     private Group rootRef;
 
@@ -50,11 +54,15 @@ public class RenderEngine {
 
     /** Use a data structure to store the text so that
      *  characters can be added to or deleted from the current cursor position in constant time*/
-    private List<Text> text;
+    List<Text> text;
 
     public RenderEngine(final Group root) {
         rootRef = root;
         text = new ArrayList<>();
+    }
+
+    Group getRootRef() {
+        return this.rootRef;
     }
 
     /** Use a data structure to store the render information where updates take linear time*/
@@ -63,7 +71,7 @@ public class RenderEngine {
      *  This class may need to interact with the KeyEventHandler:
      *  For instance, when a key is pressed, the related text object should be
      *  stored inside the data structure.*/
-    private void render() {
+    void render() {
         currentPos = new Position(LEFT_MARGIN, TOP_MARGIN);
         size = 0;
         for (int i = 0; i < text.size(); i ++) {
@@ -208,7 +216,7 @@ public class RenderEngine {
     }
 
     /** Dispose a single text input by the user.*/
-    private void disposeSingleText(Text temp) {
+    void disposeSingleText(Text temp) {
         textSetUp(temp);
         double textWidth = temp.getLayoutBounds().getWidth();
         int width = (int) Math.round(textWidth);
@@ -291,9 +299,4 @@ public class RenderEngine {
         return new KeyEventHandler();
     }
 
-
-
-    private class CursorTracker {
-
-    }
 }
